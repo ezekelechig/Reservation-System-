@@ -83,6 +83,27 @@ class Flight{
     }
 
 };
+class User{
+    private:
+        int id;
+        string name;
+    public:
+        User(){}; // imserted implicit constructor for user
+        User(int id, string name)
+        {
+            this->id = id;
+            this->name = name;
+        }
+    int getUserId()
+        {
+            return this->id;
+        }
+        string getUserName()
+        {
+            return this->name;
+        }
+
+};
     std::ostream& operator << (std:: ostream &out, Flight& data)
     {
         out << data.name << ": ";
@@ -90,6 +111,12 @@ class Flight{
         out << data.getdeparture_city()<< ": ";
         out << data.getcabinclass("Economy") << ": ";
         return out;
+    }
+    std::ostream& operator << (std:: ostream &out2, User& data2)
+    {
+        out2 << data2.getUserId() << ": ";
+        out2 << data2.getUserName() << ": ";
+        return out2;
     }
 //::::::::::::::::::::::::::::::BEGINS::::::::::::::LINKEDLIST IMPLEMENTATION::::::::::::::::::::::::::::::::::::
 struct Node
@@ -144,6 +171,117 @@ class FlightLinkedList // : Flight
                 }
             }
         }
+        void searchFlight(Flight x)
+        {
+            Node* temp = head;
+            if(head == NULL)
+            {
+                cout<<"Flight Not Found!" <<endl;
+            }
+            else
+            {
+                while (temp != NULL)
+                {
+                    if(temp->data.number == x.number) 
+                    {
+                        cout<<x<<endl;
+                        return;
+                    }
+                    temp = temp->next;
+                }
+                
+                cout<<"Flight Not Found!"<<endl;
+            }
+        }
+        void deleteFlight(Flight x)
+        {
+            if(head == NULL)
+            {
+                cout<<"There no Flight Added Yet!" <<endl;
+                return;
+            }
+            else if(head->data.number == x.number)
+            {
+                Node* temp1 = head;
+                head = head->next;
+                temp1 = NULL;
+            }
+            else
+            {
+                Node* temp2 = head; Node* target = head;
+                while(target != NULL)
+                {
+                    if(target->data.number == x.number)
+                    {
+                        temp2->next = target->next;
+                        target = NULL;
+                        return;
+                    }
+                    temp2 = target;
+                    target = temp2->next;
+                }
+            }
+            size--;
+        }
+};
+
+struct node
+{
+    User data;
+    node* left;
+    node* right;
+};
+
+class UserBST
+{
+    private:
+        node* root;
+        int size;
+    public:
+        UserBST()
+        {
+            this->root = NULL;
+            size = 0;
+        }
+     node* creatNode()
+     {
+         node* newNode = new node();
+         return newNode;
+     }
+     node* insertUser(node *root, User x)
+     {
+        if(root == NULL)
+        {
+            root = creatNode();
+            root->data = x;
+            root->left = root->right = NULL;
+        }
+        else if(x.getUserId() <= root->data.getUserId())
+        {
+            root->left = insertUser(root->left, x);
+        }
+        else
+        {
+            root->right = insertUser(root->right, x);
+        }
+        size++;
+        return root;
+     }
+
+     void displayBST(node* root)
+     {
+         if(root == NULL)
+         {
+             return;
+         }
+         else
+         {
+             displayBST(root->left);
+             cout<<root->data<<endl;
+             displayBST(root->right);
+
+         }  
+     }
 
 };
 
@@ -151,22 +289,42 @@ class FlightLinkedList // : Flight
 
 int main()
 {
+//::::::::Flight Instances :::::::::::::::::::::
     Flight plain1("SpiritAirline", 12345);
     Flight plain2("AricAirline", 65876);
+    Flight plain3("AirPeace",11111);
     plain1.setdeparture_city("Houston");
     plain2.setdeparture_city("Lagos-Nigeria");
     plain1.setcabinclass();
     cout<<plain1.name<<endl;
     cout<<plain1.getcabinclass("Business")<<endl;
 
+//::::::::::::User Instances:::::::::::::::::::::::
+
+    User user1(1000, "Kelechi Eze");
+    User user2(999, "Busayo Busayo");
+    cout<<user1.getUserId()<<endl;
+
  //::::::::::::::LINKEDLIST:::::::::::::::::::::::::
     FlightLinkedList flightlist;
     flightlist.addToList(plain1);
     flightlist.addToList(plain2);
+    flightlist.addToList(plain3);
     flightlist.displayFlight();
     flightlist.getSize();
+    flightlist.searchFlight(plain3);
+    flightlist.deleteFlight(plain3);
+    flightlist.searchFlight(plain3);
     
  //::::::::::::::END::::::::::::::::::::::::::::::::
+
+ //::::::::::::::BST IMPLEMENTATION:::::::::::::::::
+    UserBST bst;
+    node* root;
+    root = bst.insertUser(root, user1);
+    bst.insertUser(root, user2);
+    bst.displayBST(root);
+
 
 
     return 0;
