@@ -236,12 +236,12 @@ class UserBST
 {
     private:
         node* root;
-        int size;
+        int size2;
     public:
         UserBST()
         {
             this->root = NULL;
-            size = 0;
+            size2 = 0;
         }
      node* creatNode()
      {
@@ -264,7 +264,7 @@ class UserBST
         {
             root->right = insertUser(root->right, x);
         }
-        size++;
+        size2++;
         return root;
      }
 
@@ -276,12 +276,102 @@ class UserBST
          }
          else
          {
+             
              displayBST(root->left);
              cout<<root->data<<endl;
              displayBST(root->right);
-
          }  
      }
+    
+    void searchUser(node* root, User x)
+    {
+        if(root == NULL)
+        {
+            cout<<"Not Found!"<<endl;
+            return;
+        }
+        else if(root->data.getUserId() == x.getUserId())
+        {
+            cout<< "Found User => " << x << endl;
+        }
+        else if(x.getUserId() < root->data.getUserId())
+        {
+            searchUser(root->left, x);
+        }
+        else
+        {
+            searchUser(root->right,x);
+        }
+    }
+    node* getMin(node* root)
+    {
+        if(root == NULL)
+        {
+            cout<< "There is no minimum value in an empty tree"<<endl;
+            return root;
+        }
+        else
+        {
+            if(root->left == NULL) return root;
+            return getMin(root->left);
+        }
+        
+    }
+    node* removeUser(node* root, User x)
+    {
+        if(root == NULL)
+        {
+            cout<< "BST is empty!"<< endl;
+        }
+        else if(x.getUserId() < root->data.getUserId())  
+        {
+             root->left = removeUser(root->left, x);
+        }
+        else if(x.getUserId() > root->data.getUserId())
+        {
+            root->right = removeUser(root->right, x);
+        }
+       
+        else
+        {
+            // case 1: when we are deleting a leave node
+            if(root->left == NULL && root->right == NULL)
+            {
+                delete root;
+                root = NULL;
+            }
+            // case 2: when we are deleting a node with only one child
+            else if(root->left == NULL)
+            {
+                node* temp = root;
+                root = root->right;
+                delete temp;
+            }
+            else if(root->right == NULL)
+            {
+                node* temp = root;
+                root = root->left;
+                delete temp;
+            }
+            // case 3: When we are deleting a node with 2 children
+            else
+            {
+                node * temp = getMin(root->right);
+                root->data = temp->data;
+                root->right = removeUser(root->right, temp->data);
+            }
+            
+        }
+        size2--;
+        return root;
+    }
+    void getSize()
+    {
+        cout<<"The current size of the BST is: " <<endl;
+        cout << size2 <<endl;
+    }
+
+
 
 };
 
@@ -302,7 +392,12 @@ int main()
 //::::::::::::User Instances:::::::::::::::::::::::
 
     User user1(1000, "Kelechi Eze");
-    User user2(999, "Busayo Busayo");
+    User user2(500, "Busayo Busayo");
+    User user3(1500, "Kemi Kemi");
+    User user4(250, "Philip Philip");
+    User user5(750, "Julia Julia");
+    User user6(1250, "Steph Steph");
+    User user7(1750, "Susan Susan");
     cout<<user1.getUserId()<<endl;
 
  //::::::::::::::LINKEDLIST:::::::::::::::::::::::::
@@ -323,9 +418,19 @@ int main()
     node* root;
     root = bst.insertUser(root, user1);
     bst.insertUser(root, user2);
+    bst.insertUser(root, user3);
+    bst.insertUser(root, user4);
+    bst.insertUser(root, user5);
+    bst.insertUser(root, user6);
+    //bst.insertUser(root, user7);
     bst.displayBST(root);
-
-
-
+    cout<<"Displaying minimum"<<endl;
+    cout<<bst.getMin(root)->data<<endl;
+    //bst.searchUser(root, user2);
+    //bst.searchUser(root, user3);
+    bst.removeUser(root, user1);
+    cout<<"Displaying what is remaining after deleting user2" <<endl;
+    bst.displayBST(root);
+    bst.getSize();
     return 0;
 }
