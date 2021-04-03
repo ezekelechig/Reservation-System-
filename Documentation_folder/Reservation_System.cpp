@@ -12,6 +12,8 @@ class Flight{
         string airport;
         string destination;
         string cabinclass[3];
+        string departure_time;
+        string arrival_time;
         
 
     public:
@@ -70,7 +72,6 @@ class Flight{
       this->cabinclass[0] = "Economy";
       this->cabinclass[1] = "FirstClass";
       this->cabinclass[2] = "Business";
-
   }
 
  string getcabinclass(string _cclass)
@@ -81,43 +82,35 @@ class Flight{
       }
       return "Invalid input";
     }
+ void setDeparturetime(string dtime)
+ {
+     this->departure_time = dtime;
+ }
+ string getDeparturetime()
+ {
+     return this->departure_time;
+ }
+ void setArrivaltime(string atime)
+ {
+     this->arrival_time = atime;
+ }
+ string getArrivaltime()
+ {
+     return this->arrival_time;
+ }
 
 };
-class User{
-    private:
-        int id;
-        string name;
-    public:
-        User(){}; // imserted implicit constructor for user
-        User(int id, string name)
-        {
-            this->id = id;
-            this->name = name;
-        }
-    int getUserId()
-        {
-            return this->id;
-        }
-        string getUserName()
-        {
-            return this->name;
-        }
 
-};
     std::ostream& operator << (std:: ostream &out, Flight& data)
     {
         out << data.name << ": ";
         out << data.number << ": ";
-        out << data.getdeparture_city()<< ": ";
-        out << data.getcabinclass("Economy") << ": ";
+        out << " flying from "<< data.getdeparture_city() <<" departing at: "<< data.getDeparturetime()<< " --> ";
+        out << " to " << data.getdestination() <<" arriving at: " <<data.getArrivaltime()<< " : ";
+        out << "cabin class selected: " <<data.getcabinclass("Economy") << ": ";
         return out;
     }
-    std::ostream& operator << (std:: ostream &out2, User& data2)
-    {
-        out2 << data2.getUserId() << ": ";
-        out2 << data2.getUserName() << ": ";
-        return out2;
-    }
+    
 //::::::::::::::::::::::::::::::BEGINS::::::::::::::LINKEDLIST IMPLEMENTATION::::::::::::::::::::::::::::::::::::
 struct Node
 {
@@ -171,12 +164,39 @@ class FlightLinkedList // : Flight
                 }
             }
         }
-        void searchFlight(Flight x)
+        bool searchFlight(string x, string y)
         {
             Node* temp = head;
             if(head == NULL)
             {
                 cout<<"Flight Not Found!" <<endl;
+                return head;
+            }
+            else
+            {
+                while (temp != NULL)
+                {
+                    if(temp->data.getdeparture_city() == x || temp->data.getdestination() == y) 
+                    {
+                        cout<< "Flight Found!" <<endl;
+                        cout<<"Name of Flight: "<< x <<endl;
+                        return true;
+                    }
+                    temp = temp->next;
+                }
+                
+                cout<<"Flight Not Found!"<<endl;
+                return false;
+            }
+            
+        }
+        bool searchFlight2(Flight x)
+        {
+            Node* temp = head;
+            if(head == NULL)
+            {
+                cout<<"Flight Not Found!" <<endl;
+                return head;
             }
             else
             {
@@ -184,14 +204,17 @@ class FlightLinkedList // : Flight
                 {
                     if(temp->data.number == x.number) 
                     {
-                        cout<<x<<endl;
-                        return;
+                        cout<< "Flight Found!" <<endl;
+                        cout<<"Name of Flight: "<< x <<endl;
+                        return true;
                     }
                     temp = temp->next;
                 }
                 
                 cout<<"Flight Not Found!"<<endl;
+                return false;
             }
+            
         }
         void deleteFlight(Flight x)
         {
@@ -224,6 +247,112 @@ class FlightLinkedList // : Flight
             size--;
         }
 };
+class ScheduleFlight //: public Flight, FlightLinkedList
+{
+    private:
+        FlightLinkedList y;
+    public:
+        FlightLinkedList getList()
+        {
+            return this->y;
+        }
+        ScheduleFlight()
+        {
+            FlightLinkedList();
+        }
+        void setSchedule(Flight x)
+        {
+            if(y.searchFlight2(x)== true)
+            {
+                cout<<"Schedule Already Exist"<<endl;
+            }
+            else
+            {
+                y.addToList(x);
+                cout<<"Schedule Added Successfully"<<endl;
+            }
+        }
+        void viewSchedule()
+        {
+            y.displayFlight();
+            
+        }
+
+        void deleteSchedule(Flight x)
+        {
+            if(y.searchFlight2(x) == true)
+            {
+                y.deleteFlight(x);
+                cout<<"Schedule Successfully deleted!"<<endl;
+            }
+            else
+            {
+                cout<<"Schedule you are attempting to delete does not exist!" <<endl;
+            }
+        }
+
+};
+class Booking : ScheduleFlight
+{
+    private:
+        int Bid;
+    public:
+        Booking(){};
+        Booking(int Bid)
+        {
+            this->Bid = Bid;
+        }
+    bool bookingSearch(Flight x)
+    {
+        if(getList().searchFlight2(x) == true)
+        {
+            cout<<x<<endl;
+            return true;
+        }
+        else
+        {
+            cout<<"Flight Not Found!" <<endl;
+            return false;
+        }
+    }
+};
+class User : Booking
+{
+    private:
+        int id;
+        string name;
+        string password;
+    public:
+        User(){}; // imserted implicit constructor for user
+        User(int id, string name)
+        {
+            this->id = id;
+            this->name = name;
+        }
+    int getUserId()
+        {
+            return this->id;
+        }
+        string getUserName()
+        {
+            return this->name;
+        }
+        void setpassWord(string _pwd)
+        {
+            this->password = _pwd;
+        }
+        string getPassword()
+        {
+            return this->password;
+        }
+
+};
+std::ostream& operator << (std:: ostream &out2, User& data2)
+    {
+        out2 << data2.getUserId() << ": ";
+        out2 << data2.getUserName() << ": ";
+        return out2;
+    }
 
 struct node
 {
@@ -238,6 +367,7 @@ class UserBST
         node* root;
         int size2;
     public:
+        //node* root;
         UserBST()
         {
             this->root = NULL;
@@ -264,7 +394,6 @@ class UserBST
         {
             root->right = insertUser(root->right, x);
         }
-        size2++;
         return root;
      }
 
@@ -296,12 +425,58 @@ class UserBST
         }
         else if(x.getUserId() < root->data.getUserId())
         {
-            searchUser(root->left, x);
+            return searchUser(root->left, x);
         }
         else
         {
-            searchUser(root->right,x);
+            return searchUser(root->right,x);
         }
+        
+    }
+    bool searchUser2(node* root, int user_id)
+    {
+        if(root == NULL)
+        {
+            cout<<"Not Found!"<<endl;
+            return false;
+        }
+        else if(root->data.getUserId() == user_id)
+        {
+            cout<< "Found User => " << user_id << endl;
+            return true;
+        }
+        else if(user_id < root->data.getUserId())
+        {
+            return searchUser2(root->left, user_id);
+        }
+        else
+        {
+            return searchUser2(root->right,user_id);
+        }
+        return 0;
+        
+    }
+    bool searchUser3(node* root, int user_id, string pwd)
+    {
+        if(root == NULL)
+        {
+            cout<<"Not Found!"<<endl;
+            return 0;
+        }
+        else if(user_id == root->data.getUserId() && pwd == root->data.getPassword())
+        {
+            cout<< "Found User in search-3"<< endl;
+            return 1;
+        }
+        else if(user_id < root->data.getUserId())
+        {
+            return searchUser3(root->left, user_id, pwd);
+        }
+        else
+        {
+            return searchUser3(root->right,user_id,pwd);
+        }
+        return 0;
     }
     node* getMin(node* root)
     {
@@ -362,7 +537,6 @@ class UserBST
             }
             
         }
-        size2--;
         return root;
     }
     void getSize()
@@ -374,18 +548,77 @@ class UserBST
 
 
 };
+class UserAccount//: public User, UserBST
+{
+    private:
+        UserBST x;
+    public:
+        
+        UserAccount(){};
+        node* root;
+
+    UserBST getBST()
+    {
+        return this->x;
+    }
+    bool creatAccount(string user_name, string _password, int user_id)
+    {
+        if(x.searchUser2(root, user_id))
+        {
+            cout<<"User Already Exist!" <<endl;
+            return false;
+        }
+        else
+        {
+            User new_user(user_id, user_name);
+            new_user.setpassWord(_password);
+            root = x.insertUser(root, new_user);
+            cout<<"Account Successfully Created!" <<endl;
+            return true;
+        }
+    }
+
+    bool logIn(int userid, string _pwd)
+    {
+       if(x.searchUser3(root, userid, _pwd))
+       {
+           return true;
+       }
+       else
+       return 0;
+    }
+    
+};
+
+class Admin : ScheduleFlight, UserBST
+{
+    private:
+        int adminId;
+        string adminName;
+    public:
+        Admin(int adminId, string adminName)
+        {
+            this->adminId = adminId;
+            this->adminName = adminName;
+        }  
+};
 
 //::::::::::::::::::::::::::::::ENDS::::::::::::::::LINKEDLIST IMPLEMENTATION::::::::::::::::::::::::::::::::::::
 
 int main()
 {
+
 //::::::::Flight Instances :::::::::::::::::::::
     Flight plain1("SpiritAirline", 12345);
     Flight plain2("AricAirline", 65876);
     Flight plain3("AirPeace",11111);
     plain1.setdeparture_city("Houston");
-    plain2.setdeparture_city("Lagos-Nigeria");
+    plain2.setdeparture_city("Lagos");
     plain1.setcabinclass();
+    plain1.setDeparturetime("2:00pm CDT, Wednessday July 7");
+    plain1.setArrivaltime("1:00 pm WAP, Thursday July 8");
+    plain1.setdestination("Lagos-Nigeria");
+    plain2.setdestination("Houston Texas-USA");
     cout<<plain1.name<<endl;
     cout<<plain1.getcabinclass("Business")<<endl;
 
@@ -398,18 +631,19 @@ int main()
     User user5(750, "Julia Julia");
     User user6(1250, "Steph Steph");
     User user7(1750, "Susan Susan");
+    user1.setpassWord("xxxx");
     cout<<user1.getUserId()<<endl;
 
  //::::::::::::::LINKEDLIST:::::::::::::::::::::::::
     FlightLinkedList flightlist;
-    flightlist.addToList(plain1);
-    flightlist.addToList(plain2);
-    flightlist.addToList(plain3);
-    flightlist.displayFlight();
-    flightlist.getSize();
-    flightlist.searchFlight(plain3);
-    flightlist.deleteFlight(plain3);
-    flightlist.searchFlight(plain3);
+    //flightlist.addToList(plain1);
+    // flightlist.addToList(plain2);
+    // flightlist.addToList(plain3);
+    // flightlist.displayFlight();
+    // flightlist.getSize();
+    // flightlist.searchFlight(plain3);
+    // flightlist.deleteFlight(plain3);
+    // flightlist.searchFlight(plain3);
     
  //::::::::::::::END::::::::::::::::::::::::::::::::
 
@@ -432,5 +666,109 @@ int main()
     cout<<"Displaying what is remaining after deleting user2" <<endl;
     bst.displayBST(root);
     bst.getSize();
+    //::::::::::::::::::Testing FlightSchedule Class:::::::::
+    ScheduleFlight SF;
+    SF.setSchedule(plain1);
+    SF.setSchedule(plain2);
+    SF.viewSchedule();
+    SF.deleteSchedule(plain3);
+    Admin adminA(1, "Guy Pearson");
+    Booking book(1);
+    UserAccount UA;  // Instantiated user account
+    UA.creatAccount("Mary", "x6xx", 1111);
+    UA.creatAccount("Kelechi", "$1ka", 2000);
+    UA.creatAccount("Kelechi", "$1ka", 2000);
+    UA.creatAccount("John", "#fun3", 2500);
+    
+    
+    string x;
+    // if(book.bookingSearch(plain2) == true)
+    // {
+    //     cout<< "You can Proceed to book...."<<endl;
+    //     cout<< "Do you want to proceed to booking?"<<endl;
+    //     cin>> x;
+    //     if(x== "yes")
+    //     {
+    //         cout<<"Begin Booking"<<endl;
+    //     }
+
+    // }
+    int option;
+
+    cout<< "WELCOME!" <<endl;
+
+    cout<< "PLEASE SELECT USER TYPE FROM THE OPTIONS BELOW" <<endl;
+
+    cout<< "OPTION 1: User" << endl;
+
+    cout<< "OPTION 2: Admin" <<endl;
+
+    cin>> option;
+    if(option == 1)
+    {
+        string option, cont = "yes";
+        string search1, search2, ptb, username, password, accq; int userID;
+        cout<<"ARE YOU A REGISTERED USER? (select  if you are a registered user, else select no) " <<endl;
+        cin>>option;
+    if(option == "no")
+    {
+        while(option != "yes")
+        {
+            cout<< "Do you want to create account? "<<endl;
+            cin>>accq;
+            if(accq == "yes")
+            {
+                cout<<"Enter username: "; cin>>username;
+                cout<<"Enter password: "; cin>>password;
+                cout<<"Enter userID: "; cin>> userID;
+                if((UA.creatAccount(username, password, userID)) == false)
+                {
+                    cout<<"Account Creation Failed!" <<endl;
+                }
+                else option = "yes";
+            }
+        }
+        
+    }
+    else if(option == "yes")
+    {
+            cout<<"PLease Log in: " <<endl;
+            cout<<"Enter UserID: "; 
+            cin>>userID;
+            cout<<"Enter Password: "; 
+            cin>>password;
+            if(UA.logIn(userID, password))
+            {
+                while(cont == "yes")
+                {
+                    cout<< "Proceed to search flights"<<endl;
+                    cout<< "Please enter departure city and hit enter: " ;
+                    cin>>search1;
+                    cout << "Please enter arrival city and hit enter: ";
+                    cin>>search2;
+                    if(flightlist.searchFlight(search1, search2) == true)
+                    {
+                        cout<< "Proceed to booking" <<endl;
+                        cout << "Do you want to proceed to booking?" <<endl;
+                        cin>> ptb;
+                        cout<<"Please enter flightId"<<endl;
+                    }
+                    else 
+                    {
+                        cout<< "Continue Searching for flight" <<endl;
+                        cout<< "Do you want to continue?" <<endl;
+                        cin>> cont;
+                    }
+                }
+            }  
+            else
+            {
+                cout<< "User not found"<<endl;
+            }
+            
+        }  
+    }
+    
+    
     return 0;
 }
