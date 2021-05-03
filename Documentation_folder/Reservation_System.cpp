@@ -706,7 +706,7 @@ class UserBST //Implementation of BST begins here
 };// End of BST Class
 
 //Useraccount class implementation
-class UserAccount//: public User, UserBST // UserAccount Class
+class UserAccount//, public UserBST // UserAccount Class
 {
     private:
         UserBST x;
@@ -1262,17 +1262,21 @@ int main()
                     {
                         cout<<"Enter ID of the user you want to delete\n";
                         cin>>IDtodelete;
-                        if(adminA.searchUser2(root, IDtodelete) !=NULL)Usertodelete = *(adminA.searchUser2(root, IDtodelete));
-                        else 
+                        if(adminA.searchUser2(root, IDtodelete) != NULL) 
                         {
-                            cout<<"ID does not exist\n";
+                            Usertodelete = *(adminA.searchUser2(root, IDtodelete));
+                        }
+                        else
+                        {
+                            //cout<<"ID does not exist\n";
                             mylogging.writeLog("Admin attempted to delete invalid User with id " + to_string(IDtodelete) + " on "+  getTime());
                         }
-                        UA.deleteUserAccount(IDtodelete); //testing
-                        // root = adminA.removeUser(root, Usertodelete );
-                        mylogging.writeLog("User with id " + to_string(IDtodelete) + " was successfully deleted by Admin on" + getTime());
-                        cout<<"Do you want to delete another user?\n";
-                        cin>>answer;
+                            UA.deleteUserAccount(IDtodelete); //testing
+                            // root = adminA.removeUser(root, Usertodelete );
+                            mylogging.writeLog("User with id " + to_string(IDtodelete) + " was successfully deleted by Admin on" + getTime());
+                            cout<<"Do you want to delete another user?\n";
+                            cin>>answer;
+                              
                         
                     }
                     cout<<"Go back to options?\n";
