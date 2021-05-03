@@ -7,5 +7,11 @@ The Flight reservation system is constrained to use the following data structure
 The project also includes searching and sorting algorithms. We used Binary search, Linear search and sorting to sort the user in ascending order of user id
 
 Team Members:
-Name: Kelechi Eze 
+Busayo Oluwakuse P21988535
+Kelechi Eze  P21179881
+Susan Abunene P21906054
+Oluwakemi Adewale P21944179
+Ifeanyi Okoye P20185153
+
+
 
