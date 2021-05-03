@@ -13468,3 +13468,47 @@ Admin attempted to delete invalid User with id 3311 on Mon May  3 13:07:34 2021
 
 User with id 3311 was successfully deleted by Admin onMon May  3 13:07:34 2021
 
+Initialized flight object plain1 on Mon May  3 13:45:51 2021
+
+Initialized flight object plain2 on Mon May  3 13:45:51 2021
+
+Initialized flight object plain3 on Mon May  3 13:45:51 2021
+
+initialized flight object plain5 on Mon May  3 13:45:51 2021
+
+Initialized flight object plain6 at Mon May  3 13:45:51 2021
+
+Created user on Mon May  3 13:45:51 2021
+
+Created user on Mon May  3 13:45:51 2021
+
+Created user on Mon May  3 13:45:51 2021
+
+Created user on Mon May  3 13:45:51 2021
+
+User with id 1 successfully logged in on Mon May  3 13:47:10 2021
+
+Admin successfully set schedule for flight number UA1212 on Mon May  3 13:50:51 2021
+
+Admin successfully viewed scheduled on Mon May  3 13:51:20 2021
+
+Admin successfully deleted schedule for flight number NK297 on Mon May  3 13:51:55 2021
+
+Admin successfully deleted schedule for flight number NK337 on Mon May  3 13:52:10 2021
+
+Admin successfully viewed scheduled on Mon May  3 13:52:29 2021
+
+Admin attempted to delete invalid User with id 1 on Mon May  3 13:54:43 2021
+
+User with id 1 was successfully deleted by Admin onMon May  3 13:54:43 2021
+
+Admin attempted to delete invalid User with id 2000 on Mon May  3 13:54:56 2021
+
+User with id 2000 was successfully deleted by Admin onMon May  3 13:54:56 2021
+
+User with id 1  was successfully added by Admin on Mon May  3 13:56:21 2021
+
+User with id 2000  was successfully added by Admin on Mon May  3 13:56:58 2021
+
+User with id 1 Encountered Error while trying to Log in on Mon May  3 13:58:33 2021
+

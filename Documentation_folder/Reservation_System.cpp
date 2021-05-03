@@ -974,7 +974,7 @@ int main()
     adminA.setSchedule(plain3);
     adminA.setSchedule(plain4);
     adminA.setSchedule(plain5);
-    cout<< "I want to see what is below this line \n";
+    
     // adminA.Search4booking("NK337");
     // book.Search4booking("NK337");
     
@@ -1095,9 +1095,10 @@ int main()
                                     cin>>viewupcoming;
                                     if(viewupcoming == "yes")
                                     {
-                                        cout<< "Here is your upcoming flight with\n";
-                                        cout<< " \n";
-                                        cout<< *(adminA.Search4booking(flightId));
+                                        cout<< "CONGRATULATION ON YOUR RESERVATION, PLEASE SEE YOUR FLIGHT DETAILS BELOW \n";
+                                        cout<< *(adminA.Search4booking(flightId)) <<" \n";
+                                        cout<<endl;
+                                        cout<<"Note! remember to check in on time to avoid additional charges!\n";
                                     }
                                     payopt = "no";
                                     cout << "Do you want to continue a new search?\n";
@@ -1127,7 +1128,10 @@ int main()
                                     cin>>viewupcoming;
                                     if(viewupcoming == "yes")
                                     {
-                                        cout<< *(adminA.Search4booking(flightId));
+                                        cout<< "CONGRATULATION ON YOUR RESERVATION, PLEASE SEE YOUR FLIGHT DETAILS BELOW \n";
+                                        cout<< *(adminA.Search4booking(flightId)) <<" \n";
+                                        cout<<endl;
+                                        cout<<"Note! remember to check in on time to avoid additional charges!\n";
                                     }
                                     payopt = "no";
                                     cout << "Do you want to continue a new search?\n";
